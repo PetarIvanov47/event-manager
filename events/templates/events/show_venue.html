@@ -1,0 +1,39 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+
+
+<div class="card">
+    <div class="card-header">
+        <h1 class="card-title">{{ venue }}</h1>
+    </div>
+    <div class="card-body">
+        <p class="card-text">
+            <li style="font-size: 20px"><strong>Address -  </strong>{{ venue.address }}</li>
+            <li style="font-size: 20px"><strong>Zip Code - </strong>{{ venue.zip_code }}</li>
+            <li style="font-size: 20px"><strong>Phone - </strong>{{ venue.phone }}</li>
+            <li style="font-size: 20px"><strong>Email Address - </strong>{{ venue.email_address }}</li>
+            <li style="font-size: 20px"><strong>Web Address - </strong><a href="{{ venue.web }}">{{ venue.web }}</a></li>
+        </p>
+
+
+        <div class="btn-group">
+            <a href="javascript:history.back()" class="btn btn-dark">Go Back</a>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                Download
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'venue-text' venue.id %}">Download Text File</a></li>
+                <li><a class="dropdown-item" href="{% url 'venue-csv' venue.id  %}">Download CSV File</a></li>
+                <li><a class="dropdown-item" href="{% url 'venue-pdf' venue.id %}">Download PDF File</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<br/>
+
+{% endblock %}

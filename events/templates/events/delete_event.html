@@ -1,0 +1,21 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+<center>
+    <div class="card text-center mb-3" style="width: 35rem;">
+        <div class="card-body">
+            <h5 class="card-title" style="font-size: 3em;"> &#x26A0; Delete Event</h5>
+            <p style="font-size: 35px">"{{ event.name }}"</p>
+            <p class="card-text">Do you really want to delete this Event?<br/>This process cannot be undone!</p>
+            <form method="POST" action="{% url 'delete-event' event.id %}">
+                {% csrf_token %}
+                <a href="{% url 'list-events' %}" class="btn btn-success btn-lg">Cancel</a>
+                <input type="submit" class="btn btn-danger btn-lg" value="DELETE">
+            </form>
+        </div>
+    </div>
+</center>
+{% endblock %}
+
+
+

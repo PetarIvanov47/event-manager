@@ -1,0 +1,70 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+
+<h1>Venues...</h1>
+To Add New Venue Click Here -> <a href="{% url 'add-venue' %}">Add Venue</a>
+<br/>
+
+
+<table class="table table-bordered table-striped table-hover">
+    {% for venue in venues %}
+    <tr>
+        <td>
+            <strong>{{ venue }}</strong>
+        </td>
+        <td align="right">
+            <a href="{% url 'show-venue' venue.id %}" class="btn btn-info btn-sm">Info</a>
+            <a href="{% url 'update-venue' venue.id %}" class="btn btn-secondary btn-sm">Update</a>
+            <a href="{% url 'delete-venue' venue.id %}" class="btn btn-danger btn-sm">Delete</a>
+        </td>
+
+    </tr>
+
+    {% endfor %}
+</table>
+<br/><br/>
+<nav aria-label="...">
+    <ul class="pagination">
+        {% if venues.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page=1">&laquo; First</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ venues.previous_page_number }}">Previous</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true">&laquo; First</a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true">Previous</a>
+        </li>
+
+        {% endif %}
+
+        {% for i in venues.paginator.page_range %}
+        <li class="page-item {% if venues.number == i %}active{% endif %}">
+            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+        </li>
+        {% endfor %}
+
+        {% if venues.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ venues.next_page_number }}">Next</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ venues.paginator.num_pages }}">Last &raquo;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true">Next</a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true">Last &raquo;</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+
+{% endblock %}

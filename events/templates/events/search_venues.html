@@ -1,0 +1,49 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+
+{% if searched %}
+    {% if venues %}
+        <h1>
+            Results for search "{{ searched }}"
+        </h1>
+
+        To Add New Venue Click Here -> <a href="{% url 'add-venue' %}">Add Venue</a><br/><br/>
+
+        <table class="table table-bordered table-striped table-hover">
+        {% for venue in venues %}
+            <tr>
+                <td>
+                    <strong>{{ venue }}</strong>
+                </td>
+                <td align="right">
+                    <a href="{% url 'show-venue' venue.id %}" class="btn btn-info btn-sm">Info</a>
+                    <a href="{% url 'update-venue' venue.id %}" class="btn btn-secondary btn-sm">Update</a>
+                    <a href="{% url 'delete-venue' venue.id %}" class="btn btn-danger btn-sm">Delete</a>
+
+                </td>
+            </tr>
+
+            {% endfor %}
+        </table>
+
+
+    {% else %}
+        <center>
+            <h1>
+                This Venue doesn't exist!<br/><br/>
+                To Add New Venue Click Here -> <a href="{% url 'add-venue' %}">Add Venue</a>
+            </h1>
+        </center>
+
+        {% endif %}
+
+{% else %}
+    <h1>
+        Please Use The SearchBar!!!
+    </h1>
+{% endif %}
+
+{% endblock %}
+
+
