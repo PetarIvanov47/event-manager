@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views, downloads
+from . import views, download_views
 
 urlpatterns = [
     path('', views.home, name="home"),
@@ -14,17 +14,17 @@ urlpatterns = [
     path('add_event', views.add_event, name="add-event"),
     path('delete_event/<event_id>', views.delete_event, name="delete-event"),
     path('delete_venue/<venue_id>', views.delete_venue, name="delete-venue"),
-    path('all_venues_text', downloads.all_venues_text, name="all-venues-text"),
-    path('venue_text/<venue_id>', downloads.venue_text, name="venue-text"),
-    path('all_venues_csv', downloads.all_venues_csv, name="all-venues-csv"),
-    path('venue_csv/<venue_id>', downloads.venue_csv, name="venue-csv"),
-    path('all_venues_pdf', downloads.all_venues_pdf, name="all-venues-pdf"),
-    path('venue_pdf/<venue_id>', downloads.venue_pdf, name="venue-pdf"),
-    path('all_events_text', downloads.all_events_text, name="all-events-text"),
-    path('event_text/<event_id>', downloads.event_text, name="event-text"),
-    path('all_events_csv', downloads.all_events_csv, name="all-events-csv"),
-    path('event_csv/<event_id>', downloads.event_csv, name="event-csv"),
-    path('all_events_pdf', downloads.all_events_pdf, name="all-events-pdf"),
-    path('event_pdf/<event_id>', downloads.event_pdf, name="event-pdf"),
+    path('all_venues_text', download_views.all_venues_text, name="all-venues-text"),
+    path('venue_text/<venue_id>', download_views.venue_text, name="venue-text"),
+    path('all_venues_csv', download_views.all_venues_csv, name="all-venues-csv"),
+    path('venue_csv/<venue_id>', download_views.venue_csv, name="venue-csv"),
+    path('all_venues_pdf', download_views.all_venues_pdf, name="all-venues-pdf"),
+    path('venue_pdf/<venue_id>', download_views.venue_pdf, name="venue-pdf"),
+    path('all_events_text', download_views.all_events_text, name="all-events-text"),
+    path('event_text/<event_id>', download_views.event_text, name="event-text"),
+    path('all_events_csv', download_views.all_events_csv, name="all-events-csv"),
+    path('event_csv/<event_id>', download_views.event_csv, name="event-csv"),
+    path('all_events_pdf', download_views.all_events_pdf, name="all-events-pdf"),
+    path('event_pdf/<event_id>', download_views.event_pdf, name="event-pdf"),
 
 ]

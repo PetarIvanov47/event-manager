@@ -52,10 +52,12 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-
+                        <li>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </li>
                     </ul>
                 </li>
+
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -68,14 +70,19 @@
                         <li><a class="dropdown-item" href="{% url 'all-venues-csv' %}">All Venues CSV File</a></li>
                         <li><a class="dropdown-item" href="{% url 'all-venues-pdf' %}">All Venues PDF File</a></li>
 
-                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
                         <li><a class="dropdown-item" href="{% url 'all-events-text' %}">All Events Text File</a></li>
                         <li><a class="dropdown-item" href="{% url 'all-events-csv' %}">All Events CSV File</a></li>
                         <li><a class="dropdown-item" href="{% url 'all-events-pdf' %}">All Events PDF File</a></li>
 
                     </ul>
                 </li>
+
             </ul>
+            
+            <a href="{% url 'login' %}" class="btn btn-dark">Sign in</a>
 
 
             <form class="d-flex" role="search" method="POST" action="{% url 'search-venues' %}">
