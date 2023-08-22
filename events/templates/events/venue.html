@@ -11,21 +11,24 @@ To Add New Venue Click Here -> <a href="{% url 'add-venue' %}">Add Venue</a>
     {% for venue in venues %}
     <tr>
         <td>
-            <strong>{{ venue }}</strong>
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <strong>{{ venue }}</strong>
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url 'show-venue' venue.id %}" class="btn btn-info btn-sm">Info</a>
+                    <a href="{% url 'update-venue' venue.id %}" class="btn btn-secondary btn-sm">Update</a>
+                    <a href="{% url 'delete-venue' venue.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </div>
+            </div>
         </td>
-        <td align="right">
-            <a href="{% url 'show-venue' venue.id %}" class="btn btn-info btn-sm">Info</a>
-            <a href="{% url 'update-venue' venue.id %}" class="btn btn-secondary btn-sm">Update</a>
-            <a href="{% url 'delete-venue' venue.id %}" class="btn btn-danger btn-sm">Delete</a>
-        </td>
-
     </tr>
 
     {% endfor %}
 </table>
 <br/><br/>
 <nav aria-label="...">
-    <ul class="pagination">
+    <ul class="pagination justify-content-center">
         {% if venues.has_previous %}
         <li class="page-item">
             <a class="page-link" href="?page=1">&laquo; First</a>

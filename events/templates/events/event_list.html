@@ -47,7 +47,7 @@ To Add New Event Click Here -> <a href="{% url 'add-event' %}">Add Event</a>
 {% endfor %}
 <br/>
 <nav aria-label="...">
-    <ul class="pagination">
+    <ul class="pagination justify-content-center">
         {% if event_list.has_previous %}
         <li class="page-item">
             <a class="page-link" href="?page=1">&laquo; First</a>
