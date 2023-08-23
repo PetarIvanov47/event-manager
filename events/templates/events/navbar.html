@@ -77,13 +77,12 @@
                     </ul>
                 </li>
 
-
+                {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                        aria-expanded="false">
                         Downloads
                     </a>
-
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{% url 'all-venues-text' %}">All Venues Text File</a></li>
                         <li><a class="dropdown-item" href="{% url 'all-venues-csv' %}">All Venues CSV File</a></li>
@@ -97,6 +96,7 @@
                         <li><a class="dropdown-item" href="{% url 'all-events-pdf' %}">All Events PDF File</a></li>
 
                     </ul>
+                    {% endif %}
                 </li>
 
             </ul>

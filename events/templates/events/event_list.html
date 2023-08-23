@@ -25,10 +25,11 @@ You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
             </li>
         </p>
     </div>
-
+    {% if user.is_authenticated %}
     <div class="card-footer text-body-secondary">
         <a href="{% url 'update-event' event.id %}" class="btn btn-secondary">Update</a>
         <a href="{% url 'delete-event' event.id %}" class="btn btn-danger">Delete</a>
+
         <div class="btn-group">
             <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
@@ -41,7 +42,9 @@ You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
             </ul>
         </div>
     </div>
+    {% endif %}
 </div>
+
 
 <br/>
 {% endfor %}

@@ -1,6 +1,7 @@
 {% extends 'events/base.html' %}
 
 {% block content %}
+{% if user.is_authenticated %}
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -29,4 +30,13 @@
         </div>
     </div>
 </div>
+{% else %}
+<h3>
+    <div class="alert alert-warning" role="alert">
+    <strong>&#9888; You Must Be Logged In To Add New Venue!</strong><br/>
+    <a href="{% url 'login' %}">Log In</a>
+    </div>
+</h3>
+
+{% endif %}
 {% endblock %}
