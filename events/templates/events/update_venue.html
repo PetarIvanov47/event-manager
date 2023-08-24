@@ -2,6 +2,7 @@
 
 {% block content %}
 {% if user.is_authenticated %}
+    {% if user.id == venue.owner or user.is_superuser %}
 <div class="d-flex justify-content-center align-items-center" style="min-height: 50vh;">
     <div class="shadow p-4 bg-body rounded" style="width: 60%; min-height: 50vh;">
 
@@ -21,6 +22,9 @@
     </div>
 </div>
 <br/><br/>
+{% else %}
+        <h1>You aren't Authorized To Update This Venue!</h1>
+    {% endif %}
 
 {% else %}
 <h3>

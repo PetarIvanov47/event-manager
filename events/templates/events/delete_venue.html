@@ -2,6 +2,8 @@
 
 {% block content %}
 {% if user.is_authenticated %}
+    {% if user.id == venue.owner or user.is_superuser %}
+
 <center>
     <div class="card text-center mb-3" style="width: 35rem;">
         <div class="card-body">
@@ -17,6 +19,9 @@
         </div>
     </div>
 </center>
+    {% else %}
+        <h1>You aren't Authorized To Delete This Venue!</h1>
+    {% endif %}
 {% else %}
 <h3>
     <div class="alert alert-warning" role="alert">

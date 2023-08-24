@@ -2,7 +2,7 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-    {% if user == event.manager %}
+    {% if user == event.manager or user.is_superuser %}
 <h1>
     Update Event
 </h1>
@@ -17,7 +17,7 @@
 
 </form>
     {% else %}
-<h1>Access Denied</h1>
+<h1>You aren't Authorized To Update This Event!</h1>
     {% endif %}
 {% else %}
 <h3>

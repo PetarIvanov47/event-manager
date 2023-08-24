@@ -21,8 +21,10 @@ To Add New Venue Click Here -> <a href="{% url 'add-venue' %}">Add Venue</a><br/
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <a href="{% url 'show-venue' venue.id %}" class="btn btn-info btn-sm">Info</a>
                     {% if user.is_authenticated %}
-                    <a href="{% url 'update-venue' venue.id %}" class="btn btn-secondary btn-sm">Update</a>
-                    <a href="{% url 'delete-venue' venue.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        {% if venue.owner == user.id or user.is_superuser %}
+                        <a href="{% url 'update-venue' venue.id %}" class="btn btn-secondary btn-sm">Update</a>
+                        <a href="{% url 'delete-venue' venue.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>

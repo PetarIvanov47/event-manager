@@ -4,8 +4,9 @@
 <h1>
     Events
 </h1>
+{% if user.is_authenticated %}
 You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
-<br/>
+{% endif %}
 
 {% for event in event_list %}
 <div class="card">
@@ -26,7 +27,7 @@ You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
         </p>
     </div>
     {% if user.is_authenticated %}
-        {% if user == event.manager %}
+        {% if user == event.manager or user.is_superuser %}
     <div class="card-footer text-body-secondary">
         <a href="{% url 'update-event' event.id %}" class="btn btn-secondary">Update</a>
         <a href="{% url 'delete-event' event.id %}" class="btn btn-danger">Delete</a>

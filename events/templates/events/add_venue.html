@@ -2,39 +2,46 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header text-center">
-                    <h1>Add New Venue</h1>
-                </div>
-                <div class="card-body">
-                    {% if submitted %}
-                    <div class="alert alert-success">
-                        Your Venue Was Submitted Successfully!
-                        <br/>
-                    </div>
-                    {% else %}
-                    <form action="" method="post">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <div class="text-center mt-3">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                            <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
-                        </div>
-                    </form>
-                    {% endif %}
-                </div>
-            </div>
+{% if submitted %}
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 10vh;">
+    <div class="shadow p-4 bg-body rounded" style="width: 60%; min-height: 10vh;">
+
+        <div class="alert alert-success">
+            Your Venue Was Submitted Successfully!
+            <br/>
         </div>
+        <a href="{% url 'list-venues' %}">View Venues</a>
+    </div>
+</div>
+
+{% else %}
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 50vh;">
+    <div class="shadow p-4 bg-body rounded" style="width: 60%; min-height: 50vh;">
+
+        <center>
+            <h1>Add New Venue</h1>
+        </center>
+
+        <form action="" method=POST>
+            {% csrf_token %}
+
+            {{ form.as_p }}
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+        {% endif %}
+
     </div>
 </div>
 {% else %}
 <h3>
     <div class="alert alert-warning" role="alert">
-    <strong>&#9888; You Must Be Logged In To View This Page!</strong><br/>
-    <a href="{% url 'login' %}">Log In</a>
+        <strong>&#9888; You Must Be Logged In To View This Page!</strong><br/>
+        <a href="{% url 'login' %}">Log In</a>
     </div>
 </h3>
 
