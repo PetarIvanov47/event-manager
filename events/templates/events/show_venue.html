@@ -18,7 +18,8 @@
 
 
         <div class="btn-group">
-            <a href="javascript:history.back()" class="btn btn-dark">Go Back</a>
+            <a href="{% url 'list-venues' %}" class="btn btn-dark">Go Back</a>
+
         </div>
         {% if user.is_authenticated %}
         <div class="btn-group">

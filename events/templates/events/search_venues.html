@@ -3,48 +3,51 @@
 {% block content %}
 
 {% if searched %}
-    {% if venues %}
-        <h1>
-            Results for search "{{ searched }}"
-        </h1>
+{% if venues %}
+<h1>
+    Results for search "{{ searched }}"
+</h1>
 
-        To Add New Venue Click Here -> <a href="{% url 'add-venue' %}">Add Venue</a><br/><br/>
+To Add New Venue Click Here -> <a href="{% url 'add-venue' %}">Add Venue</a><br/><br/>
 
-        <table class="table table-bordered table-striped table-hover">
-        {% for venue in venues %}
-            <tr>
-                <td>
+<table class="table table-bordered table-striped table-hover">
+    {% for venue in venues %}
+    <tr>
+        <td>
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
                     <strong>{{ venue }}</strong>
-                </td>
-                <td align="right">
-
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <a href="{% url 'show-venue' venue.id %}" class="btn btn-info btn-sm">Info</a>
                     {% if user.is_authenticated %}
                     <a href="{% url 'update-venue' venue.id %}" class="btn btn-secondary btn-sm">Update</a>
                     <a href="{% url 'delete-venue' venue.id %}" class="btn btn-danger btn-sm">Delete</a>
                     {% endif %}
+                </div>
+            </div>
+        </td>
+    </tr>
 
-                </td>
-            </tr>
+    {% endfor %}
 
-            {% endfor %}
-        </table>
+</table>
 
-
-    {% else %}
-        <center>
-            <h1>
-                &#9746; We couldn't find any matches for "{{ searched }}"<br/><br/>
-                You Can Add New Venue Here -> <a href="{% url 'add-venue' %}">Add Venue</a>
-            </h1>
-        </center>
-
-        {% endif %}
 
 {% else %}
+<center>
     <h1>
-        Please Use The SearchBar!!!
+        &#9746; We couldn't find any matches for "{{ searched }}"<br/><br/>
+        You Can Add New Venue Here -> <a href="{% url 'add-venue' %}">Add Venue</a>
     </h1>
+</center>
+
+{% endif %}
+
+{% else %}
+<h1>
+    Please Use The SearchBar!!!
+</h1>
 {% endif %}
 
 {% endblock %}

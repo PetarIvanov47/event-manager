@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 import calendar
 from calendar import HTMLCalendar
 from datetime import datetime
@@ -31,8 +32,10 @@ def delete_event(request, event_id):
 def update_event(request, event_id):
     event = Event.objects.get(pk=event_id)
     form = EventForm(request.POST or None, instance=event)
+
     if form.is_valid():
         form.save()
+        messages.success(request, f'You Successfully Update - {event.name}')
         return redirect('list-events')
 
     return render(request, 'events/update_event.html', {'event': event, 'form': form})
@@ -61,7 +64,9 @@ def update_venue(request, venue_id):
     form = VenueForm(request.POST or None, instance=venue)
     if form.is_valid():
         form.save()
-        return redirect('list-venues')
+        messages.success(request, f'You Successfully Update - {venue.name}')
+
+        return redirect("show-venue", venue_id=venue_id)
 
     return render(request, 'events/update_venue.html', {'venue': venue, 'form': form})
 

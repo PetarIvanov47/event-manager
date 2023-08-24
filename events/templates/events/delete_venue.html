@@ -1,6 +1,7 @@
 {% extends 'events/base.html' %}
 
 {% block content %}
+{% if user.is_authenticated %}
 <center>
     <div class="card text-center mb-3" style="width: 35rem;">
         <div class="card-body">
@@ -9,10 +10,20 @@
             <p class="card-text">Do you really want to delete this Venue?<br/>This process cannot be undone!</p>
             <form method="POST" action="{% url 'delete-venue' venue.id %}">
                 {% csrf_token %}
-                <a href="{% url 'list-venues' %}" class="btn btn-success btn-lg">Cancel</a>
+                <!--<a href="{% url 'list-venues' %}" class="btn btn-success btn-lg">Cancel</a>-->
+                <a href="javascript:history.back()" class="btn btn-success btn-lg">Cancel</a>
                 <input type="submit" class="btn btn-danger btn-lg" value="DELETE">
             </form>
         </div>
     </div>
 </center>
+{% else %}
+<h3>
+    <div class="alert alert-warning" role="alert">
+        <strong>&#9888; You Must Be Logged In To View This Page!</strong><br/>
+        <a href="{% url 'login' %}">Log In</a>
+    </div>
+</h3>
+
+{% endif %}
 {% endblock %}

@@ -1,6 +1,8 @@
 {% extends 'events/base.html' %}
 
 {% block content %}
+{% if user.is_authenticated %}
+    {% if user == event.manager %}
 <center>
     <div class="card text-center mb-3" style="width: 35rem;">
         <div class="card-body">
@@ -15,6 +17,18 @@
         </div>
     </div>
 </center>
+    {% else %}
+        <h1>Access Denied</h1>
+    {% endif %}
+{% else %}
+<h3>
+    <div class="alert alert-warning" role="alert">
+        <strong>&#9888; You Must Be Logged In To View This Page!</strong><br/>
+        <a href="{% url 'login' %}">Log In</a>
+    </div>
+</h3>
+
+{% endif %}
 {% endblock %}
 
 

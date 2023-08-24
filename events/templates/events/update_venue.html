@@ -1,19 +1,38 @@
 {% extends 'events/base.html' %}
 
 {% block content %}
-    <h1>
-        Update Venue
-    </h1>
-    <br/>
-    <form action="" method=POST>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <br/>
-        <input type="submit" value="Submit"
-        class="btn btn-success">
-        <a href="{% url 'list-venues' %}" class="btn btn-secondary">Cancel</a>
-    </form>
+{% if user.is_authenticated %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 50vh;">
+    <div class="shadow p-4 bg-body rounded" style="width: 60%; min-height: 50vh;">
 
+
+        <h1>Update Venue</h1>
+
+        <form action="" method=POST>
+            {% csrf_token %}
+
+            {{ form.as_p }}
+            <div class="text-center mt-3" style="margin-top: auto;">
+                <input type="submit" value="Submit" class="btn btn-success">
+                <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a>
+                <!--<a href="{% url 'list-venues' %}" class="btn btn-secondary">Cancel</a>-->
+            </div>
+        </form>
+    </div>
+</div>
+<br/><br/>
+
+{% else %}
+<h3>
+    <div class="alert alert-warning" role="alert">
+        <strong>&#9888; You Must Be Logged In To View This Page!</strong><br/>
+        <a href="{% url 'login' %}">Log In</a>
+    </div>
+</h3>
+
+{% endif %}
 
 
 {% endblock %}
+
+

@@ -26,6 +26,7 @@ You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
         </p>
     </div>
     {% if user.is_authenticated %}
+        {% if user == event.manager %}
     <div class="card-footer text-body-secondary">
         <a href="{% url 'update-event' event.id %}" class="btn btn-secondary">Update</a>
         <a href="{% url 'delete-event' event.id %}" class="btn btn-danger">Delete</a>
@@ -42,6 +43,7 @@ You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
             </ul>
         </div>
     </div>
+        {% endif %}
     {% endif %}
 </div>
 

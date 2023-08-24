@@ -1,6 +1,8 @@
 {% extends 'events/base.html' %}
 
 {% block content %}
+{% if user.is_authenticated %}
+    {% if user == event.manager %}
 <h1>
     Update Event
 </h1>
@@ -11,9 +13,20 @@
     <input type="submit" value="Submit"
            class="btn btn-success btn-lg">
     <a href="{% url 'list-events' %}" class="btn btn-secondary btn-lg">Cancel</a>
-    <br/>
-    <br/>
+    <br/><br/>
 
 </form>
+    {% else %}
+<h1>Access Denied</h1>
+    {% endif %}
+{% else %}
+<h3>
+    <div class="alert alert-warning" role="alert">
+        <strong>&#9888; You Must Be Logged In To View This Page!</strong><br/>
+        <a href="{% url 'login' %}">Log In</a>
+    </div>
+</h3>
+
+{% endif %}
 
 {% endblock %}
