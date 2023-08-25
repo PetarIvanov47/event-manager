@@ -26,5 +26,6 @@ urlpatterns = [
     path('event_csv/<event_id>', download_views.event_csv, name="event-csv"),
     path('all_events_pdf', download_views.all_events_pdf, name="all-events-pdf"),
     path('event_pdf/<event_id>', download_views.event_pdf, name="event-pdf"),
+    path('my_events', views.my_events, name="my-events"),
 
 ]
