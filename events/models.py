@@ -15,22 +15,13 @@ class Venue(models.Model):
         return self.name
 
 
-class MyWebsiteUser(models.Model):
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    email = models.EmailField('User Email')
-
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
-
-
 class Event(models.Model):
     name = models.CharField('Event name', max_length=150)
     event_data = models.DateTimeField('Event Date')
     venue = models.ForeignKey(Venue, blank=True, null=True, on_delete=models.CASCADE)
     manager = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
     description = models.TextField(blank=True)
-    attendees = models.ManyToManyField(MyWebsiteUser, blank=True)
+    attendees = models.ManyToManyField(User, blank=True, related_name='event_attendees')
 
     def __str__(self):
         return self.name

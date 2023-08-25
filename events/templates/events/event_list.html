@@ -21,7 +21,7 @@ You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
             <li style="font-size: 20px"><strong>Description - </strong>{{ event.description }}</li>
             <li style="font-size: 20px"><strong>Attendees: </strong>
                 {% for user in event.attendees.all %}
-                {{ user }},
+                    {{ user }},
                 {% endfor %}
             </li>
         </p>

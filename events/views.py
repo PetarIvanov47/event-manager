@@ -34,6 +34,13 @@ def delete_venue(request, venue_id):
 
 def delete_event(request, event_id):
     event = Event.objects.get(pk=event_id)
+    #
+    # if request.user.is_authenticated:
+    #     if event.manager == request.user.id:
+    #
+
+
+
 
     if request.method == "POST":
         event.delete()
@@ -74,6 +81,7 @@ def add_event(request):
                 event = form.save(commit=False)
                 event.manager = request.user
                 event.save()
+                form.save_m2m()
                 return HttpResponseRedirect('/add_event?submitted=True')
 
     else:

@@ -1,11 +1,9 @@
 from django.contrib import admin
 from .models import Venue
-from .models import MyWebsiteUser
 from .models import Event
+from django.contrib.auth.models import Group
 
-# admin.site.register(Venue)
-admin.site.register(MyWebsiteUser)
-# admin.site.register(Event)
+admin.site.unregister(Group)
 
 
 @admin.register(Venue)
@@ -21,4 +19,6 @@ class EventAdmin(admin.ModelAdmin):
     list_display = ('name', 'event_data', 'venue')
     list_filter = ('event_data', 'venue')
     ordering = ('event_data',)
+
+
 
