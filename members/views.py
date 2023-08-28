@@ -13,6 +13,7 @@ def login_user(request):
 
         if user is not None:
             login(request, user)
+            messages.success(request, f'Welcome back {request.user}!')
             return redirect('home')
         else:
             messages.success(request, 'There Was An Error Logging In, Try Again...')

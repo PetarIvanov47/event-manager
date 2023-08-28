@@ -8,6 +8,40 @@ from django.contrib.auth.models import User
 from .forms import VenueForm, EventForm, EventFormAdmin
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator
+from django.db.models import Q
+
+
+# Leave Event
+def leave_event(request, event_id):
+    if request.user.is_authenticated:
+        event = Event.objects.get(pk=event_id)
+        if request.user in event.attendees.all():
+            event.attendees.remove(request.user)
+            messages.success(request, f"{request.user} Successfully Leave The Event - {event}")
+            return redirect("show-event", event_id=event_id)
+
+        else:
+            messages.success(request, f"{request.user} Is Not Registered For - {event}!")
+            return redirect("show-event", event_id=event_id)
+
+    else:
+        return redirect('login')
+
+
+# Join Event
+def join_event(request, event_id):
+    if request.user.is_authenticated:
+        event = Event.objects.get(pk=event_id)
+        if request.user in event.attendees.all():
+            messages.success(request, f"{request.user} Is Register For This Event!")
+            return redirect("show-event", event_id=event_id)
+
+        event.attendees.add(request.user)
+        messages.success(request, f"{request.user} Successfully Join Event - {event}!")
+        return redirect("show-event", event_id=event_id)
+
+    else:
+        return redirect('login')
 
 
 # Set up Pagination
@@ -156,7 +190,10 @@ def add_venue(request):
 def all_events(request):
     if request.method == "POST":
         searched = request.POST.get('searched', '')
-        events = Event.objects.filter(name__contains=searched).order_by('event_data', 'name')
+        events = Event.objects.filter(
+            Q(name__icontains=searched) | Q(manager__username__icontains=searched) | Q(venue__name__icontains=searched)
+        ).order_by('event_data', 'name')
+
         event_list = set_paginator(request, events, 5)
 
         return render(request, 'events/event_list.html', {'event_list': event_list, 'searched': searched})
@@ -167,25 +204,37 @@ def all_events(request):
         return render(request, 'events/event_list.html', {'event_list': event_list})
 
 
+def show_event(request, event_id):
+    event = Event.objects.get(pk=event_id)
+    return render(request, 'events/show_event.html', {'event': event})
+
+
 def home(request, year=datetime.now().year, month=datetime.now().strftime('%B')):
-    name = "Petur"
-    month = month.title()
-    month_number = list(calendar.month_name).index(month)
-    month_number = int(month_number)
+    if request.user.is_authenticated:
+        month = month.title()
+        month_number = list(calendar.month_name).index(month)
+        month_number = int(month_number)
 
-    cal = HTMLCalendar().formatmonth(year, month_number)
+        cal = HTMLCalendar().formatmonth(year, month_number)
 
-    now = datetime.now()
-    current_year = now.year
+        now = datetime.now()
+        current_year = now.year
 
-    time = now.strftime('%I:%M:%S %p')
-    return render(request,
-                  'events/home.html',
-                  {'name': name,
-                   'year': year,
-                   'month': month,
-                   'month_number': month_number,
-                   'cal': cal,
-                   'current_year': current_year,
-                   'time': time,
-                   })
+        event_list = Event.objects.filter(
+            event_data__year=year,
+            event_data__month=month_number
+        ).order_by('event_data', 'name')
+
+        time = now.strftime('%I:%M:%S %p')
+        return render(request,
+                      'events/home.html',
+                      {'year': year,
+                       'month': month,
+                       'month_number': month_number,
+                       'cal': cal,
+                       'current_year': current_year,
+                       'time': time,
+                       'event_list': event_list,
+                       })
+    else:
+        return redirect('login')

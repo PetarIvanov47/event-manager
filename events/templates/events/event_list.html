@@ -9,6 +9,7 @@ You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
 {% endif %}
 <br/>
 <br/>
+
 <form class="d-flex" role="search" method="POST" action="{% url 'list-events' %}">
     {% csrf_token %}
     <input class="form-control me-2" type="search" placeholder="Search Event" aria-label="Search"
@@ -16,6 +17,7 @@ You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
     <button class="btn btn-outline-success" type="submit" id="search-button">Search</button>
 </form>
 <br/>
+
 
 {% for event in event_list %}
 <div class="card">
@@ -35,11 +37,17 @@ You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
             </li>
         </p>
     </div>
-    {% if user.is_authenticated %}
-    {% if user == event.manager or user.is_superuser %}
     <div class="card-footer text-body-secondary">
+        {% if user in event.attendees.all%}
+        <a href="{% url 'leave-event' event.id %}" class="btn btn-danger">Leave Event</a>
+        {% else %}
+        <a href="{% url 'join-event' event.id %}" class="btn btn-success">JOIN EVENT</a>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+        {% if user == event.manager or user.is_superuser %}
         <a href="{% url 'update-event' event.id %}" class="btn btn-secondary">Update</a>
-        <a href="{% url 'delete-event' event.id %}" class="btn btn-danger">Delete</a>
+
 
         <div class="btn-group">
             <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown"
@@ -52,6 +60,7 @@ You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
                 <li><a class="dropdown-item" href="{% url 'event-pdf' event.id %}">Download PDF File</a></li>
             </ul>
         </div>
+        <a href="{% url 'delete-event' event.id %}" class="btn btn-danger">Delete</a>
     </div>
     {% endif %}
     {% endif %}

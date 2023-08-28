@@ -7,11 +7,12 @@ To Add New Venue Click Here -> <a href="{% url 'add-venue' %}">Add Venue</a>
 <br/>
 
 <form class="d-flex" role="search" method="POST" action="{% url 'list-venues' %}">
-                {% csrf_token %}
-                <input class="form-control me-2" type="search" placeholder="Search Venues" aria-label="Search"
-                       name="searched" id="search-input">
-                <button class="btn btn-outline-success" type="submit" id="search-button">Search</button>
-            </form>
+    {% csrf_token %}
+    <input class="form-control me-2" type="search" placeholder="Search Venues" aria-label="Search"
+           name="searched" id="search-input">
+    <button class="btn btn-outline-success" type="submit" id="search-button">Search</button>
+</form>
+<br/>
 
 
 <table class="table table-bordered table-striped table-hover">
@@ -25,10 +26,10 @@ To Add New Venue Click Here -> <a href="{% url 'add-venue' %}">Add Venue</a>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <a href="{% url 'show-venue' venue.id %}" class="btn btn-info btn-sm">Info</a>
                     {% if user.is_authenticated %}
-                        {% if venue.owner == user.id or user.is_superuser %}
-                        <a href="{% url 'update-venue' venue.id %}" class="btn btn-secondary btn-sm">Update</a>
-                        <a href="{% url 'delete-venue' venue.id %}" class="btn btn-danger btn-sm">Delete</a>
-                        {% endif %}
+                    {% if venue.owner == user.id or user.is_superuser %}
+                    <a href="{% url 'update-venue' venue.id %}" class="btn btn-secondary btn-sm">Update</a>
+                    <a href="{% url 'delete-venue' venue.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    {% endif %}
                     {% endif %}
                 </div>
             </div>

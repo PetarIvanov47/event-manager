@@ -26,5 +26,8 @@ urlpatterns = [
     path('all_events_pdf', download_views.all_events_pdf, name="all-events-pdf"),
     path('event_pdf/<event_id>', download_views.event_pdf, name="event-pdf"),
     path('my_events', views.my_events, name="my-events"),
+    path('show_event/<event_id>', views.show_event, name="show-event"),
+    path('join_event/<event_id>', views.join_event, name="join-event"),
+    path('leave_event/<event_id>', views.leave_event, name="leave-event"),
 
 ]

@@ -2,10 +2,8 @@
 
 {% block content %}
 
-<div class="d-flex justify-content-center align-items-center" style="min-height: 50vh;">
-    <div class="shadow p-4 bg-body rounded" style="width: 25%; min-height: 50vh;">
-
-        <h1>Login</h1>
+<div class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="shadow p-4 bg-body rounded" style="width: 35%; min-height: 40vh;">
 
         <form action="" method="POST">
             {% csrf_token %}
@@ -18,13 +16,19 @@
                 <label for="exampleInputPassword1" class="form-label">Password</label>
                 <input type="password" class="form-control" name="password">
             </div>
-            <div class="text-center mt-3">
-                <input type="submit" value="Log in" class="btn btn-primary">
+
+            <div class="d-grid gap-2">
+                <input type="submit" value="Log in" class="btn btn-primary btn-lg">
             </div>
 
         </form>
         <br/>
-        <a href="{% url 'register-user' %}">Create an Account</a>
+        <hr>
+
+        <div class="d-grid gap-2 col-6 mx-auto">
+                <a href="{% url 'register-user' %}" class="btn btn-success btn-lg">Create an Account</a>
+            </div>
     </div>
 </div>
+
 {% endblock %}

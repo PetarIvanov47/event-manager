@@ -1,16 +1,38 @@
 {% extends 'events/base.html' %}
 
 {% block content %}
+<center>
 
-    <center>
-    <h1>
-        Hello {{ user }}! Events For {{ month }} {{ year }}
-    </h1>
     {{ cal|safe }}
     <br/><br/>
-    <strong>Current Year {{ current_year }}<br/>
-        Current Time {{ time }}
-    </strong>
-    </center>
+
+    {% if event_list %}
+    <h3>Events for {{ month }}:</h3><br/>
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Manager</th>
+        <th scope="col">Date</th>
+        <th scope="col">Venue</th>
+    </tr>
+    </thead>
+    {% for event in event_list %}
+    <tbody>
+    <tr>
+        <th scope="row"><a href="{% url 'show-event' event.id %}">{{ event }}</a></th>
+        <td>{{ event.manager }}</td>
+        <td>{{ event.event_data }}</td>
+        <td><a href="{% url 'show-venue' event.venue.id %}">{{ event.venue }}</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+    <h3>No Events This Month</h3>
+    You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
+{% endif %}
+</center>
+
+
 
 {% endblock %}
