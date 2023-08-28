@@ -7,6 +7,15 @@
 {% if user.is_authenticated %}
 You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
 {% endif %}
+<br/>
+<br/>
+<form class="d-flex" role="search" method="POST" action="{% url 'list-events' %}">
+    {% csrf_token %}
+    <input class="form-control me-2" type="search" placeholder="Search Event" aria-label="Search"
+           name="searched" id="search-input">
+    <button class="btn btn-outline-success" type="submit" id="search-button">Search</button>
+</form>
+<br/>
 
 {% for event in event_list %}
 <div class="card">
@@ -21,13 +30,13 @@ You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
             <li style="font-size: 20px"><strong>Description - </strong>{{ event.description }}</li>
             <li style="font-size: 20px"><strong>Attendees: </strong>
                 {% for user in event.attendees.all %}
-                    {{ user }},
+                {{ user }},
                 {% endfor %}
             </li>
         </p>
     </div>
     {% if user.is_authenticated %}
-        {% if user == event.manager or user.is_superuser %}
+    {% if user == event.manager or user.is_superuser %}
     <div class="card-footer text-body-secondary">
         <a href="{% url 'update-event' event.id %}" class="btn btn-secondary">Update</a>
         <a href="{% url 'delete-event' event.id %}" class="btn btn-danger">Delete</a>
@@ -44,7 +53,7 @@ You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
             </ul>
         </div>
     </div>
-        {% endif %}
+    {% endif %}
     {% endif %}
 </div>
 
@@ -95,5 +104,6 @@ You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
     </ul>
 </nav>
 <br/><br/><br/><br/>
+
 
 {% endblock %}

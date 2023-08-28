@@ -10,12 +10,21 @@ from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator
 
 
+# Set up Pagination
+def set_paginator(request, obj, pages: int):
+    p = Paginator(obj, pages)
+    page = request.GET.get('page')
+    return p.get_page(page)
+
+
 def my_events(request):
     if request.user.is_authenticated:
         me = request.user.id
-        events = Event.objects.filter(attendees=me)
+        list_events = Event.objects.filter(attendees=me).order_by('event_data', 'name')
+        events = set_paginator(request, list_events, 5)
 
         return render(request, 'events/my_events.html', {'events': events})
+
     else:
         messages.success(request, f"You aren't Authorized To View This Page!")
         return redirect('home')
@@ -34,13 +43,6 @@ def delete_venue(request, venue_id):
 
 def delete_event(request, event_id):
     event = Event.objects.get(pk=event_id)
-    #
-    # if request.user.is_authenticated:
-    #     if event.manager == request.user.id:
-    #
-
-
-
 
     if request.method == "POST":
         event.delete()
@@ -110,17 +112,6 @@ def update_venue(request, venue_id):
     return render(request, 'events/update_venue.html', {'venue': venue, 'form': form})
 
 
-def search_venues(request):
-    if request.method == "POST":
-        searched = request.POST.get('searched', '')
-        venues = Venue.objects.filter(name__contains=searched).order_by('name')
-
-        return render(request, 'events/search_venues.html', {'searched': searched, 'venues': venues})
-
-    else:
-        return render(request, 'events/search_venues.html', {})
-
-
 def show_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
     venue_owner = User.objects.get(pk=venue.owner)
@@ -128,11 +119,17 @@ def show_venue(request, venue_id):
 
 
 def list_venues(request):
-    # Set up Pagination
-    p = Paginator(Venue.objects.all().order_by('name'), 5)
-    page = request.GET.get('page')
-    venues = p.get_page(page)
-    return render(request, 'events/venue.html', {'venues': venues})
+    if request.method == "POST":
+        searched = request.POST.get('searched', '')
+        venues = Venue.objects.filter(name__contains=searched).order_by('name')
+        all_venues = set_paginator(request, venues, 5)
+
+        return render(request, 'events/venue.html', {'all_venues': all_venues, 'searched': searched})
+
+    else:
+        venues = Venue.objects.all().order_by('name')
+        all_venues = set_paginator(request, venues, 5)
+        return render(request, 'events/venue.html', {'all_venues': all_venues})
 
 
 def add_venue(request):
@@ -157,11 +154,17 @@ def add_venue(request):
 
 
 def all_events(request):
-    # Set up Pagination
-    p = Paginator(Event.objects.all().order_by('event_data', 'name'), 5)
-    page = request.GET.get('page')
-    event_list = p.get_page(page)
-    return render(request, 'events/event_list.html', {'event_list': event_list})
+    if request.method == "POST":
+        searched = request.POST.get('searched', '')
+        events = Event.objects.filter(name__contains=searched).order_by('event_data', 'name')
+        event_list = set_paginator(request, events, 5)
+
+        return render(request, 'events/event_list.html', {'event_list': event_list, 'searched': searched})
+
+    else:
+        events = Event.objects.all().order_by('event_data', 'name')
+        event_list = set_paginator(request, events, 5)
+        return render(request, 'events/event_list.html', {'event_list': event_list})
 
 
 def home(request, year=datetime.now().year, month=datetime.now().strftime('%B')):

@@ -4,7 +4,92 @@
     <h1>
         My Events
     </h1>
-    {% for event in events %}
-        {{ event }}<br/>
-    {% endfor %}
+
+{% for event in events %}
+<div class="card">
+    <div class="card-header" style="font-size: 30px">
+        {{ event }} At {{ event.venue }}
+    </div>
+    <div class="card-body">
+        <p class="card-text">
+            <li style="font-size: 20px"><strong>Venue - </strong>{{ event.venue }}</li>
+            <li style="font-size: 20px"><strong>Date - </strong>{{ event.event_data }}</li>
+            <li style="font-size: 20px"><strong>Manager - </strong>{{ event.manager }}</li>
+            <li style="font-size: 20px"><strong>Description - </strong>{{ event.description }}</li>
+            <li style="font-size: 20px"><strong>Attendees: </strong>
+                {% for user in event.attendees.all %}
+                    {{ user }},
+                {% endfor %}
+            </li>
+        </p>
+    </div>
+    {% if user.is_authenticated %}
+        {% if user == event.manager or user.is_superuser %}
+    <div class="card-footer text-body-secondary">
+        <a href="{% url 'update-event' event.id %}" class="btn btn-secondary">Update</a>
+        <a href="{% url 'delete-event' event.id %}" class="btn btn-danger">Delete</a>
+
+        <div class="btn-group">
+            <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                Download
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'event-text' event.id %}">Download Text File</a></li>
+                <li><a class="dropdown-item" href="{% url 'event-csv' event.id %}">Download CSV File</a></li>
+                <li><a class="dropdown-item" href="{% url 'event-pdf' event.id %}">Download PDF File</a></li>
+            </ul>
+        </div>
+    </div>
+        {% endif %}
+    {% endif %}
+</div>
+
+<br/>
+{% endfor %}
+<br/>
+<nav aria-label="...">
+    <ul class="pagination justify-content-center">
+        {% if events.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page=1">&laquo; First</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ events.previous_page_number }}">Previous</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true">&laquo; First</a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true">Previous</a>
+        </li>
+
+        {% endif %}
+
+        {% for i in events.paginator.page_range %}
+        <li class="page-item {% if events.number == i %}active{% endif %}">
+            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+        </li>
+        {% endfor %}
+
+        {% if events.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ events.next_page_number }}">Next</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ events.paginator.num_pages }}">Last &raquo;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true">Next</a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true">Last &raquo;</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+<br/><br/><br/><br/>
+
 {% endblock %}

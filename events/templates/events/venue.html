@@ -6,9 +6,16 @@
 To Add New Venue Click Here -> <a href="{% url 'add-venue' %}">Add Venue</a>
 <br/>
 
+<form class="d-flex" role="search" method="POST" action="{% url 'list-venues' %}">
+                {% csrf_token %}
+                <input class="form-control me-2" type="search" placeholder="Search Venues" aria-label="Search"
+                       name="searched" id="search-input">
+                <button class="btn btn-outline-success" type="submit" id="search-button">Search</button>
+            </form>
+
 
 <table class="table table-bordered table-striped table-hover">
-    {% for venue in venues %}
+    {% for venue in all_venues %}
     <tr>
         <td>
             <div class="d-flex align-items-center justify-content-between">
@@ -34,12 +41,12 @@ To Add New Venue Click Here -> <a href="{% url 'add-venue' %}">Add Venue</a>
 <br/><br/>
 <nav aria-label="...">
     <ul class="pagination justify-content-center">
-        {% if venues.has_previous %}
+        {% if all_venues.has_previous %}
         <li class="page-item">
             <a class="page-link" href="?page=1">&laquo; First</a>
         </li>
         <li class="page-item">
-            <a class="page-link" href="?page={{ venues.previous_page_number }}">Previous</a>
+            <a class="page-link" href="?page={{ all_venues.previous_page_number }}">Previous</a>
         </li>
         {% else %}
         <li class="page-item disabled">
@@ -51,18 +58,18 @@ To Add New Venue Click Here -> <a href="{% url 'add-venue' %}">Add Venue</a>
 
         {% endif %}
 
-        {% for i in venues.paginator.page_range %}
-        <li class="page-item {% if venues.number == i %}active{% endif %}">
+        {% for i in all_venues.paginator.page_range %}
+        <li class="page-item {% if all_venues.number == i %}active{% endif %}">
             <a class="page-link" href="?page={{ i }}">{{ i }}</a>
         </li>
         {% endfor %}
 
-        {% if venues.has_next %}
+        {% if all_venues.has_next %}
         <li class="page-item">
-            <a class="page-link" href="?page={{ venues.next_page_number }}">Next</a>
+            <a class="page-link" href="?page={{ all_venues.next_page_number }}">Next</a>
         </li>
         <li class="page-item">
-            <a class="page-link" href="?page={{ venues.paginator.num_pages }}">Last &raquo;</a>
+            <a class="page-link" href="?page={{ all_venues.paginator.num_pages }}">Last &raquo;</a>
         </li>
         {% else %}
         <li class="page-item disabled">
