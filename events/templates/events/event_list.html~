@@ -28,7 +28,7 @@ You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
         <p class="card-text">
             <li style="font-size: 20px"><strong>Venue - </strong><a href="{% url 'show-venue' event.venue.id %}">{{ event.venue }}</a></li>
             <li style="font-size: 20px"><strong>Date - </strong>{{ event.event_data }}</li>
-            <li style="font-size: 20px"><strong>Days Till Event - </strong>{{ event.days_till_event }}</li>
+            <li style="font-size: 20px"><strong>Days Till Event - </strong>{{ event.days_till }}</li>
             <li style="font-size: 20px"><strong>Manager - </strong>{{ event.manager }}</li>
             <li style="font-size: 20px"><strong>Description - </strong>{{ event.description }}</li>
             <li style="font-size: 20px"><strong>Attendees: </strong>

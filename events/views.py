@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 import calendar
 from calendar import HTMLCalendar
-from datetime import datetime
+from datetime import datetime, date
 from .models import Event, Venue
 from django.contrib.auth.models import User
 from .forms import VenueForm, EventForm, EventFormAdmin
@@ -136,10 +136,10 @@ def add_event(request):
 
 def update_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
-    form = VenueForm(request.POST or None, instance=venue)
+    form = VenueForm(request.POST or None, request.FILES or None, instance=venue)
     if form.is_valid():
         form.save()
-        messages.success(request, f'You Successfully Update Venue - "{venue.name}"')
+        messages.success(request, f'You Successfully Updated Venue - "{venue.name}"')
 
         return redirect("show-venue", venue_id=venue_id)
 
@@ -170,7 +170,7 @@ def add_venue(request):
     submitted = False
 
     if request.method == "POST":
-        form = VenueForm(request.POST)
+        form = VenueForm(request.POST, request.FILES)
 
         if form.is_valid():
             venue = form.save(commit=False)
@@ -209,7 +209,15 @@ def show_event(request, event_id):
     return render(request, 'events/show_event.html', {'event': event})
 
 
+def delete_past_events():
+    today = date.today()
+    past_events = Event.objects.filter(event_data__lt=today)
+    past_events.delete()
+
+
 def home(request, year=datetime.now().year, month=datetime.now().strftime('%B')):
+    delete_past_events()
+
     if request.user.is_authenticated:
         month = month.title()
         month_number = list(calendar.month_name).index(month)

@@ -1,9 +1,9 @@
 {% extends 'events/base.html' %}
 
 {% block content %}
-    <h1>
-        My Events
-    </h1>
+<h1>
+    My Events
+</h1>
 
 {% for event in events %}
 <div class="card">
@@ -12,13 +12,13 @@
     </div>
     <div class="card-body">
         <p class="card-text">
-            <li style="font-size: 20px"><strong>Venue - </strong>{{ event.venue }}</li>
+            <li style="font-size: 20px"><strong>Venue - </strong><a href="{% url 'show-venue' event.venue.id %}">{{ event.venue }}</a></li>
             <li style="font-size: 20px"><strong>Date - </strong>{{ event.event_data }}</li>
             <li style="font-size: 20px"><strong>Manager - </strong>{{ event.manager }}</li>
             <li style="font-size: 20px"><strong>Description - </strong>{{ event.description }}</li>
             <li style="font-size: 20px"><strong>Attendees: </strong>
                 {% for user in event.attendees.all %}
-                    {{ user }},
+                {{ user }},
                 {% endfor %}
             </li>
         </p>
@@ -47,9 +47,10 @@
             </ul>
         </div>
         <a href="{% url 'delete-event' event.id %}" class="btn btn-danger">Delete</a>
-    </div>
         {% endif %}
-    {% endif %}
+        {% endif %}
+    </div>
+
 </div>
 
 <br/>

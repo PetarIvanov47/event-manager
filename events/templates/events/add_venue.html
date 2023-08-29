@@ -24,7 +24,7 @@
             <h1>Add New Venue</h1>
         </center>
 
-        <form action="" method=POST>
+        <form action="" method=POST enctype="multipart/form-data">
             {% csrf_token %}
 
             {{ form.as_p }}

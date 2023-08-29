@@ -2,8 +2,70 @@
 
 {% block content %}
 
-
+{% if venue.venue_image %}
 <div class="card">
+    <div class="card-header text-center">
+        <h1 class="card-title">{{ venue }}</h1>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+
+                <img src="{{ venue.venue_image.url }}" width=600>
+            </div>
+
+            <div class="col-md-5">
+                {% if venue_owner %}
+                <li style="font-size: 20px"><strong>Owner - </strong>{{ venue_owner }}</li>
+                {% endif %}
+                {% if venue_owner.email %}
+                <li style="font-size: 20px"><strong>Owner's Email - </strong>{{ venue_owner.email }}</li>
+                {% endif %}
+                {% if venue.address %}
+                <li style="font-size: 20px"><strong>Address - </strong>{{ venue.address }}</li>
+                {% endif %}
+                {% if venue.zip_code %}
+                <li style="font-size: 20px"><strong>Zip Code - </strong>{{ venue.zip_code }}</li>
+                {% endif %}
+                {% if venue.phone %}
+                <li style="font-size: 20px"><strong>Phone - </strong>{{ venue.phone }}</li>
+                {% endif %}
+                {% if venue.email.address %}
+                <li style="font-size: 20px"><strong>Email Address - </strong>{{ venue.email_address }}</li>
+                {% endif %}
+                {% if venue.web %}
+                <li style="font-size: 20px"><strong>Web Address - </strong><a href="{{ venue.web }}">{{ venue.web }}</a>
+                </li>
+                {% endif %}
+            </div>
+        </div>
+
+
+        <div class="row mt-4">
+            <div class="col-md-12 text-center">
+                {% if user.is_authenticated %}
+
+                <button class="btn btn-dark" onclick="window.history.back()">Go Back</button>
+                <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    Download
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'venue-text' venue.id %}">Download Text File</a></li>
+                    <li><a class="dropdown-item" href="{% url 'venue-csv' venue.id  %}">Download CSV File</a></li>
+                    <li><a class="dropdown-item" href="{% url 'venue-pdf' venue.id %}">Download PDF File</a></li>
+                </ul>
+
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<br/>
+{% else %}
+
+<div class="card" style="max-width: 1000px; margin: 0px;">
     <div class="card-header">
         <h1 class="card-title">{{ venue }}</h1>
     </div>
@@ -14,7 +76,7 @@
             {% endif %}
 
             {% if venue.address %}
-            <li style="font-size: 20px"><strong>Address -  </strong>{{ venue.address }}</li>
+            <li style="font-size: 20px"><strong>Address - </strong>{{ venue.address }}</li>
             {% endif %}
 
             {% if venue.zip_code %}
@@ -30,7 +92,8 @@
             {% endif %}
 
             {% if venue.web %}
-            <li style="font-size: 20px"><strong>Web Address - </strong><a href="{{ venue.web }}">{{ venue.web }}</a></li>
+            <li style="font-size: 20px"><strong>Web Address - </strong><a href="{{ venue.web }}">{{ venue.web }}</a>
+            </li>
             {% endif %}
         </p>
 
@@ -57,5 +120,8 @@
     </div>
 </div>
 <br/>
+{% endif %}
+
 
 {% endblock %}
+

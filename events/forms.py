@@ -6,7 +6,7 @@ from .models import Venue, Event
 class VenueForm(ModelForm):
     class Meta:
         model = Venue
-        fields = ('name', 'address', 'zip_code', 'phone', 'web', 'email_address')
+        fields = ('name', 'address', 'zip_code', 'phone', 'web', 'email_address', 'venue_image')
         labels = {
             'name': '',
             'address': '',
@@ -14,6 +14,7 @@ class VenueForm(ModelForm):
             'phone': '',
             'web': '',
             'email_address': '',
+            'venue_image': 'Image ',
         }
 
         widgets = {
@@ -33,7 +34,7 @@ class EventFormAdmin(ModelForm):
         fields = ('name', 'event_data', 'venue', 'manager', 'attendees', 'description')
         labels = {
             'name': '',
-            'event_data': 'YYYY-MM-DD HH:MM:SS',
+            'event_data': 'When',
             'venue': 'Venue',
             'manager': 'Manager',
             'attendees': 'Attendees',
@@ -42,7 +43,7 @@ class EventFormAdmin(ModelForm):
 
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Event Name'}),
-            'event_data': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Event date'}),
+            'event_data': forms.DateTimeInput(attrs={'class': 'form-control', 'type': "datetime-local"}),
             'venue': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Venue'}),
             'manager': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Manager'}),
             'attendees': forms.SelectMultiple(attrs={'class': 'form-control', 'placeholder': 'Attendees'}),
@@ -57,7 +58,7 @@ class EventForm(ModelForm):
         fields = ('name', 'event_data', 'venue', 'attendees', 'description')
         labels = {
             'name': '',
-            'event_data': 'YYYY-MM-DD HH:MM:SS',
+            'event_data': 'When',
             'venue': 'Venue',
             'attendees': 'Attendees',
             'description': '',
@@ -65,11 +66,12 @@ class EventForm(ModelForm):
 
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Event Name'}),
-            'event_data': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Event date'}),
+            'event_data': forms.DateTimeInput(attrs={'class': 'form-control', 'type': "datetime-local"}),
             'venue': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Venue'}),
             'attendees': forms.SelectMultiple(attrs={'class': 'form-control', 'placeholder': 'Attendees'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
         }
+
 
 
 
