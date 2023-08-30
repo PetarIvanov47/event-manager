@@ -20,10 +20,11 @@ class Venue(models.Model):
 class Event(models.Model):
     name = models.CharField('Event name', max_length=150)
     event_data = models.DateTimeField('Event Date')
-    venue = models.ForeignKey(Venue, blank=True, null=True, on_delete=models.CASCADE)
+    venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
     manager = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
     description = models.TextField(blank=True)
     attendees = models.ManyToManyField(User, blank=True, related_name='event_attendees')
+    approved = models.BooleanField("Approved", default=False)
 
     def __str__(self):
         return self.name
@@ -36,7 +37,7 @@ class Event(models.Model):
 
         elif today == self.event_data.date():
             event_time = self.event_data.time()
-            return f"Today at - {event_time.strftime('%I:%M %p')}"
+            return f"Today at: {event_time.strftime('%I:%M %p')}"
 
         date_time_till = self.event_data.date() - today
         days_till = str(date_time_till).split(',')[0]

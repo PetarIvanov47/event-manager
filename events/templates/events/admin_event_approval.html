@@ -1,0 +1,91 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+
+<h1>Admin Event Approval Portal</h1>
+<br/>
+
+<form action="" method=POST>
+    {% csrf_token %}
+
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Event Name</th>
+        </tr>
+        </thead>
+        {% for event in new_events %}
+        <tr>
+            <td>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <strong>{{ event }}</strong>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   value={{event.id}}
+                                   role="switch"
+                                   id="flexSwitchCheckDefault"
+                                   name="boxes">
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Approve</label>
+                        </div>
+                        <a href="{% url 'show-event' event.id %}" class="btn btn-info btn-sm">Inspect</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br/>
+    <button class="btn btn-primary" type="submit">Approve Events</button>
+</form>
+
+
+<br/><br/>
+<nav aria-label="...">
+    <ul class="pagination justify-content-center">
+        {% if all_venues.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page=1">&laquo; First</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ all_venues.previous_page_number }}">Previous</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true">&laquo; First</a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true">Previous</a>
+        </li>
+
+        {% endif %}
+
+        {% for i in all_venues.paginator.page_range %}
+        <li class="page-item {% if all_venues.number == i %}active{% endif %}">
+            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+        </li>
+        {% endfor %}
+
+        {% if all_venues.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ all_venues.next_page_number }}">Next</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ all_venues.paginator.num_pages }}">Last &raquo;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true">Next</a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true">Last &raquo;</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+
+{% endblock %}

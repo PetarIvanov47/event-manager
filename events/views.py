@@ -11,6 +11,25 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 
 
+# Admin Event Approval Portal
+def admin_event_approval(request):
+    new_events = Event.objects.filter(approved=False).order_by('event_data')
+
+    if request.user.is_superuser:
+        if request.method == "POST":
+            id_list = request.POST.getlist('boxes')
+            [Event.objects.filter(pk=int(x)).update(approved=True) for x in id_list]
+
+            messages.success(request, "Events Approved!")
+            return redirect('home')
+
+        else:
+            return render(request, 'events/admin_event_approval.html', {'new_events': new_events})
+    else:
+        messages.success(request, "You aren't authorized to view this page!")
+        return redirect('home')
+
+
 # Leave Event
 def leave_event(request, event_id):
     if request.user.is_authenticated:
@@ -18,11 +37,11 @@ def leave_event(request, event_id):
         if request.user in event.attendees.all():
             event.attendees.remove(request.user)
             messages.success(request, f"{request.user} Successfully Leave The Event - {event}")
-            return redirect("show-event", event_id=event_id)
+            return redirect(request.META['HTTP_REFERER'])
 
         else:
             messages.success(request, f"{request.user} Is Not Registered For - {event}!")
-            return redirect("show-event", event_id=event_id)
+            return redirect(request.META['HTTP_REFERER'])
 
     else:
         return redirect('login')
@@ -34,11 +53,11 @@ def join_event(request, event_id):
         event = Event.objects.get(pk=event_id)
         if request.user in event.attendees.all():
             messages.success(request, f"{request.user} Is Register For This Event!")
-            return redirect("show-event", event_id=event_id)
+            return redirect(request.META['HTTP_REFERER'])
 
         event.attendees.add(request.user)
         messages.success(request, f"{request.user} Successfully Join Event - {event}!")
-        return redirect("show-event", event_id=event_id)
+        return redirect(request.META['HTTP_REFERER'])
 
     else:
         return redirect('login')
@@ -54,7 +73,7 @@ def set_paginator(request, obj, pages: int):
 def my_events(request):
     if request.user.is_authenticated:
         me = request.user.id
-        list_events = Event.objects.filter(attendees=me).order_by('event_data', 'name')
+        list_events = Event.objects.filter(attendees=me, approved=True).order_by('event_data', 'name')
         events = set_paginator(request, list_events, 5)
 
         return render(request, 'events/my_events.html', {'events': events})
@@ -88,6 +107,7 @@ def delete_event(request, event_id):
 
 def update_event(request, event_id):
     event = Event.objects.get(pk=event_id)
+    event.approved = False
     if request.user.is_superuser:
         form = EventFormAdmin(request.POST or None, instance=event)
     else:
@@ -191,15 +211,23 @@ def all_events(request):
     if request.method == "POST":
         searched = request.POST.get('searched', '')
         events = Event.objects.filter(
-            Q(name__icontains=searched) | Q(manager__username__icontains=searched) | Q(venue__name__icontains=searched)
-        ).order_by('event_data', 'name')
+            Q(name__icontains=searched) |
+            Q(manager__username__icontains=searched) |
+            Q(venue__name__icontains=searched),
+            approved=True
+        ).order_by('event_data',
+                   'name')
 
         event_list = set_paginator(request, events, 5)
 
-        return render(request, 'events/event_list.html', {'event_list': event_list, 'searched': searched})
+        return render(request,
+                      'events/event_list.html',
+                      {'event_list': event_list,
+                       'searched': searched}
+                      )
 
     else:
-        events = Event.objects.all().order_by('event_data', 'name')
+        events = Event.objects.filter(approved=True).order_by('event_data', 'name')
         event_list = set_paginator(request, events, 5)
         return render(request, 'events/event_list.html', {'event_list': event_list})
 
@@ -216,7 +244,7 @@ def delete_past_events():
 
 
 def home(request, year=datetime.now().year, month=datetime.now().strftime('%B')):
-    delete_past_events()
+    # delete_past_events()
 
     if request.user.is_authenticated:
         month = month.title()
@@ -230,7 +258,8 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime('%B'))
 
         event_list = Event.objects.filter(
             event_data__year=year,
-            event_data__month=month_number
+            event_data__month=month_number,
+            approved=True
         ).order_by('event_data', 'name')
 
         time = now.strftime('%I:%M:%S %p')

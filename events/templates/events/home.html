@@ -14,6 +14,7 @@
         <th scope="col">Name</th>
         <th scope="col">Manager</th>
         <th scope="col">Date</th>
+        <th scope="col">Days Till event</th>
         <th scope="col">Venue</th>
     </tr>
     </thead>
@@ -23,6 +24,8 @@
         <th scope="row"><a href="{% url 'show-event' event.id %}">{{ event }}</a></th>
         <td>{{ event.manager }}</td>
         <td>{{ event.event_data }}</td>
+        <td>{{ event.days_till_event }}</td>
+
         <td><a href="{% url 'show-venue' event.venue.id %}">{{ event.venue }}</a></td>
     </tr>
     {% endfor %}
