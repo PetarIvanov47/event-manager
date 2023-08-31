@@ -2,12 +2,49 @@
 
 {% block content %}
 
-<h1>Admin Event Approval Portal</h1>
+<style>
+    .table {
+        width: 60%;
+        table-layout: fixed;
+    }
+
+    .event-name {
+        max-width: 50%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .approve-button {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 5px;
+    }
+</style>
+
+<!-- Admin Dashboard -->
+<h1> Dashboard:</h1>
+<br/>
+<div class="card" style="width: 18rem;">
+  <div class="card-header">
+      <strong>MyClub Stats</strong>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">Events - {{ event_count }}</li>
+    <li class="list-group-item">Venues - {{ venue_count }}</li>
+    <li class="list-group-item">Users - {{ user_count }}</li>
+  </ul>
+</div>
+
+<hr>
+<!-- Approval Events Form -->
+<h1> Approval Events:</h1>
 <br/>
 
-<form action="" method=POST>
+{% if new_events %}
+<form action="" method="POST">
     {% csrf_token %}
-
 
     <table class="table table-bordered table-striped table-hover">
         <thead>
@@ -18,21 +55,22 @@
         {% for event in new_events %}
         <tr>
             <td>
-                <div class="d-flex align-items-center justify-content-between">
-                    <div>
+                <div class="d-flex justify-content-between">
+                    <div class="event-name">
                         <strong>{{ event }}</strong>
                     </div>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <div class="approve-button">
                         <div class="form-check form-switch">
                             <input class="form-check-input"
                                    type="checkbox"
                                    value={{event.id}}
                                    role="switch"
-                                   id="flexSwitchCheckDefault"
+                                   id="flexSwitchCheckDefault{{ event.id }}"
                                    name="boxes">
-                            <label class="form-check-label" for="flexSwitchCheckDefault">Approve</label>
+                            <label class="form-check-label" for="flexSwitchCheckDefault{{ event.id }}">Approve</label>
+                            <a href="{% url 'show-event' event.id %}" class="btn btn-info btn-sm">Inspect</a>
                         </div>
-                        <a href="{% url 'show-event' event.id %}" class="btn btn-info btn-sm">Inspect</a>
+
                     </div>
                 </div>
             </td>
@@ -40,52 +78,67 @@
         {% endfor %}
     </table>
     <br/>
-    <button class="btn btn-primary" type="submit">Approve Events</button>
+    <div>
+        <button class="btn btn-primary" type="submit" name="approve_events">Approve Events</button>
+    </div>
 </form>
 
+{% else %}
 
-<br/><br/>
-<nav aria-label="...">
-    <ul class="pagination justify-content-center">
-        {% if all_venues.has_previous %}
-        <li class="page-item">
-            <a class="page-link" href="?page=1">&laquo; First</a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" href="?page={{ all_venues.previous_page_number }}">Previous</a>
-        </li>
-        {% else %}
-        <li class="page-item disabled">
-            <a class="page-link" tabindex="-1" aria-disabled="true">&laquo; First</a>
-        </li>
-        <li class="page-item disabled">
-            <a class="page-link" tabindex="-1" aria-disabled="true">Previous</a>
-        </li>
+<h3>
+    There are no new events...
+</h3>
 
-        {% endif %}
+{% endif %}
 
-        {% for i in all_venues.paginator.page_range %}
-        <li class="page-item {% if all_venues.number == i %}active{% endif %}">
-            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
-        </li>
+<!-- Past Events Form -->
+<br/>
+<hr>
+<br/>
+<h1>Past Events:</h1>
+<br/>
+{% if past_events %}
+<form action="" method="POST">
+    {% csrf_token %}
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Event Name</th>
+            <th scope="col">Finish At</th>
+        </tr>
+        </thead>
+        {% for event in past_events %}
+        <tr>
+            <td>
+                <div class="d-flex justify-content-between">
+                    <div class="event-name">
+                        <strong>{{ event }}</strong>
+                    </div>
+                    <a href="{% url 'show-event' event.id %}" class="btn btn-info btn-sm">Inspect</a>
+                </div>
+                </div>
+            </td>
+            <td>
+                {{ event.event_data }}
+            </td>
+        </tr>
         {% endfor %}
+    </table>
+    <br/>
+    <div>
+        <button class="btn btn-danger" type="submit" name="clear_events">Clear Past Events</button>
+    </div>
 
-        {% if all_venues.has_next %}
-        <li class="page-item">
-            <a class="page-link" href="?page={{ all_venues.next_page_number }}">Next</a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" href="?page={{ all_venues.paginator.num_pages }}">Last &raquo;</a>
-        </li>
-        {% else %}
-        <li class="page-item disabled">
-            <a class="page-link" tabindex="-1" aria-disabled="true">Next</a>
-        </li>
-        <li class="page-item disabled">
-            <a class="page-link" tabindex="-1" aria-disabled="true">Last &raquo;</a>
-        </li>
-        {% endif %}
-    </ul>
-</nav>
+</form>
+
+{% else %}
+<h3>
+    There are no past events...
+</h3>
+<br/>
+
+{% endif %}
+
 
 {% endblock %}

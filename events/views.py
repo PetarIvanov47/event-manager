@@ -11,20 +11,46 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 
 
-# Admin Event Approval Portal
-def admin_event_approval(request):
+# Admin Event Approval Page
+def admin_panel(request):
+    # MyClub Stats
+    event_count = Event.objects.all().count
+    venue_count = Venue.objects.all().count
+    user_count = User.objects.all().count
+
+    # New events for approval
     new_events = Event.objects.filter(approved=False).order_by('event_data')
 
+    # Past Events For Clear
+    today = date.today()
+    past_events = Event.objects.filter(event_data__lt=today)
+
     if request.user.is_superuser:
+
+        # Posting In Page
         if request.method == "POST":
-            id_list = request.POST.getlist('boxes')
-            [Event.objects.filter(pk=int(x)).update(approved=True) for x in id_list]
+            if "approve_events" in request.POST:
+                id_list = request.POST.getlist('boxes')
+                [Event.objects.filter(pk=int(x)).update(approved=True) for x in id_list]
 
-            messages.success(request, "Events Approved!")
-            return redirect('home')
+                messages.success(request, "Events Approved!")
+                return redirect('home')
 
+            elif "clear_events" in request.POST:
+                past_events.delete()
+                messages.success(request, "Successfully Deleted Past Events!")
+                return redirect('home')
+
+        # Just Getting The Page
         else:
-            return render(request, 'events/admin_event_approval.html', {'new_events': new_events})
+            return render(request, 'events/admin_event_approval.html', {'new_events': new_events,
+                                                                        'past_events': past_events,
+                                                                        'event_count': event_count,
+                                                                        'venue_count': venue_count,
+                                                                        'user_count': user_count
+                                                                        }
+                          )
+    # If Someone Who Is Not SuperUser Trying To View The Page
     else:
         messages.success(request, "You aren't authorized to view this page!")
         return redirect('home')
@@ -107,7 +133,6 @@ def delete_event(request, event_id):
 
 def update_event(request, event_id):
     event = Event.objects.get(pk=event_id)
-    event.approved = False
     if request.user.is_superuser:
         form = EventFormAdmin(request.POST or None, instance=event)
     else:
@@ -167,10 +192,19 @@ def update_venue(request, venue_id):
 
 
 def show_venue(request, venue_id):
+    # Get Venue Object
     venue = Venue.objects.get(pk=venue_id)
-    venue_owner = User.objects.get(pk=venue.owner)
-    return render(request, 'events/show_venue.html', {'venue': venue, 'venue_owner': venue_owner})
 
+    # Get Venue Object Owner
+    venue_owner = User.objects.get(pk=venue.owner)
+
+    # Get Events At This Venue
+    event_list = venue.event_set.all()
+
+    return render(request, 'events/show_venue.html', {'venue': venue,
+                                                      'venue_owner': venue_owner,
+                                                      'event_list': event_list}
+                  )
 
 def list_venues(request):
     if request.method == "POST":
@@ -237,14 +271,11 @@ def show_event(request, event_id):
     return render(request, 'events/show_event.html', {'event': event})
 
 
-def delete_past_events():
-    today = date.today()
-    past_events = Event.objects.filter(event_data__lt=today)
-    past_events.delete()
+def search_month_events(request):
+    pass
 
 
 def home(request, year=datetime.now().year, month=datetime.now().strftime('%B')):
-    # delete_past_events()
 
     if request.user.is_authenticated:
         month = month.title()

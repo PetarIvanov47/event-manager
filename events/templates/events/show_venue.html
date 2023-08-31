@@ -46,7 +46,6 @@
             <div class="col-md-12 text-center">
                 {% if user.is_authenticated %}
 
-                <button class="btn btn-dark" onclick="window.history.back()">Go Back</button>
                 <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
                     Download
@@ -56,16 +55,45 @@
                     <li><a class="dropdown-item" href="{% url 'venue-csv' venue.id  %}">Download CSV File</a></li>
                     <li><a class="dropdown-item" href="{% url 'venue-pdf' venue.id %}">Download PDF File</a></li>
                 </ul>
-
                 {% endif %}
             </div>
         </div>
     </div>
 </div>
 <br/>
+<hr>
+
+<center>
+<h1> Events At This Venue </h1>
+    You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
+    </center>
+<br>
+
+<table class="table table-bordered table-striped table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Manager</th>
+            <th scope="col">Days Till event</th>
+            <th scope="col">Date</th>
+
+        </tr>
+        </thead>
+        {% for event in event_list %}
+        <tbody>
+        <tr>
+            <th scope="row"><a href="{% url 'show-event' event.id %}">{{ event }}</a></th>
+            <td>{{ event.manager }}</td>
+            <td>{{ event.event_data }}</td>
+            <td>{{ event.days_till_event }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+
+
 {% else %}
 
-<div class="card" style="max-width: 1000px; margin: 0px;">
+<div class="card">
     <div class="card-header">
         <h1 class="card-title">{{ venue }}</h1>
     </div>
@@ -100,9 +128,6 @@
 
         <div class="btn-group">
 
-            <button class="btn btn-dark" onclick="window.history.back()">Go Back</button>
-
-
         </div>
         {% if user.is_authenticated %}
         <div class="btn-group">
@@ -120,6 +145,32 @@
     </div>
 </div>
 <br/>
+<center>
+<h1> Events At This Venue </h1>
+    You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
+    </center>
+<br>
+
+<table class="table table-bordered table-striped table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Manager</th>
+            <th scope="col">Days Till event</th>
+            <th scope="col">Date</th>
+
+        </tr>
+        </thead>
+        {% for event in event_list %}
+        <tbody>
+        <tr>
+            <th scope="row"><a href="{% url 'show-event' event.id %}">{{ event }}</a></th>
+            <td>{{ event.manager }}</td>
+            <td>{{ event.event_data }}</td>
+            <td>{{ event.days_till_event }}</td>
+        </tr>
+    {% endfor %}
+    </table>
 {% endif %}
 
 

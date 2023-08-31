@@ -29,6 +29,5 @@ urlpatterns = [
     path('show_event/<event_id>', views.show_event, name="show-event"),
     path('join_event/<event_id>', views.join_event, name="join-event"),
     path('leave_event/<event_id>', views.leave_event, name="leave-event"),
-    path('admin_event_approval', views.admin_event_approval, name="admin-event-approval"),
-
+    path('admin_event_approval', views.admin_panel, name="admin-event-approval"),
 ]

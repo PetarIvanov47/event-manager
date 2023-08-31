@@ -10,8 +10,7 @@
     <div class="shadow p-4 bg-body rounded" style="width: 60%; min-height: 10vh;">
 
         <div class="alert alert-success">
-            Your Event Was Submitted Successfully!
-            <br/>
+            <h5>Your Event Was Submitted Successfully And Will Be Approved Soon!</h5>
         </div>
         <a href="{% url 'list-events' %}">View Events</a>
     </div>
@@ -32,7 +31,8 @@
             {{ form.as_p }}
             <div class="text-center mt-3">
                 <button type="submit" class="btn btn-primary">Submit</button>
-                <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+                <button onclick="window.history.back();" class="btn btn-secondary">Cancel</button>
+
             </div>
         </form>
         {% endif %}

@@ -30,7 +30,7 @@
 
         <form class="d-flex" role="search" method="POST" action="{% url 'home' %}">
             {% csrf_token %}
-            <input class="form-control me-2" type="search" placeholder="Search In My Club" aria-label="Search"
+            <input class="form-control me-2" type="search" placeholder="Search Month" aria-label="Search"
                    name="searched" id="search-input">
         </form>
 
@@ -144,6 +144,12 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
+                        {% if user.is_superuser %}
+                        <li>
+                            <a class="dropdown-item" href="{% url 'admin-event-approval' %}" style="font-size: 18px">Admin</a>
+                        </li>
+
+                        {% endif %}
                         <li>
                             <a class="dropdown-item" href="{% url 'logout' %}" style="font-size: 18px">Log out</a>
                         </li>

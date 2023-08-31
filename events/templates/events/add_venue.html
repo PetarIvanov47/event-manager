@@ -30,13 +30,13 @@
             {{ form.as_p }}
             <div class="text-center mt-3">
                 <button type="submit" class="btn btn-primary">Submit</button>
-                <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+                <button onclick="window.history.back();" class="btn btn-secondary">Cancel</button>
             </div>
         </form>
-        {% endif %}
-
     </div>
 </div>
+{% endif %}
+
 {% else %}
 <h3>
     <div class="alert alert-warning" role="alert">
