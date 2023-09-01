@@ -31,7 +31,7 @@ To run this project on your local machine, follow these steps in the terminal:
 
 Clone the repository:
 
-git clone https://github.com/PeturIvanov/event-manager
+-- git clone https://github.com/PeturIvanov/event-manager --
 
 Navigate to the project directory:
 
