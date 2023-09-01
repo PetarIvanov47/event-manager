@@ -1,8 +1,10 @@
 
-Project Overview
+PROJECT OVERVIEW:
+
 This Django project was developed during my one-month vacation between courses. I started this project with zero prior knowledge of Django and web development, aiming to learn and explore various aspects of Django and related technologies.
 
-Project Details
+PROJECT DETAILS:
+
 In this project, I've covered a wide range of topics and learned the following:
 
 Version Control with Git and GitHub: I have successfully utilized Git and GitHub to manage my project's source code and collaborate with others.
