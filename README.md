@@ -67,6 +67,10 @@ python manage.py runserver
 Access the project in your web browser at http://localhost:8000/.
 
 Conclusion
-This project reflects my dedication to learning and building practical skills during my vacation. I hope this README demonstrates my journey from a complete beginner to someone capable of creating a Django project with various functionalities. I'm excited to continue learning and improving my development skills in the future. Thank you for checking out my project!
+This project reflects my dedication to learning and building practical skills during my vacation.
+I hope this README demonstrates my journey from a complete beginner to someone capable of creating a Django project with various functionalities.
+I'm excited to continue learning and improving my development skills in the future. Thank you for checking out my project!
 
 If you have any questions or feedback, please don't hesitate to contact me.
+
+
