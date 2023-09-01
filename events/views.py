@@ -313,8 +313,10 @@ def show_event(request, event_id):
 
 
 # Home View
-def home(request, month=datetime.now().strftime('%B'), year=datetime.now().year):
+def home(request, month=datetime.now().strftime('%B')):
+
     if request.user.is_authenticated:
+        year = datetime.now().year
         month = month.title()
         month_number = list(calendar.month_name).index(month)
         month_number = int(month_number)
