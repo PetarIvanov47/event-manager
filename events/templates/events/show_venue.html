@@ -64,31 +64,31 @@
 <hr>
 
 <center>
-<h1> Events At This Venue </h1>
+    <h1> Events At This Venue </h1>
     You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
-    </center>
+</center>
 <br>
 
 <table class="table table-bordered table-striped table-hover">
-        <thead>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Manager</th>
-            <th scope="col">Days Till event</th>
-            <th scope="col">Date</th>
+    <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Manager</th>
+        <th scope="col">Days Till event</th>
+        <th scope="col">Date</th>
 
-        </tr>
-        </thead>
-        {% for event in event_list %}
-        <tbody>
-        <tr>
-            <th scope="row"><a href="{% url 'show-event' event.id %}">{{ event }}</a></th>
-            <td>{{ event.manager }}</td>
-            <td>{{ event.event_data }}</td>
-            <td>{{ event.days_till_event }}</td>
-        </tr>
+    </tr>
+    </thead>
+    {% for event in event_list %}
+    <tbody>
+    <tr>
+        <th scope="row"><a href="{% url 'show-event' event.id %}">{{ event }}</a></th>
+        <td>{{ event.manager }}</td>
+        <td>{{ event.event_data }}</td>
+        <td>{{ event.days_till_event }}</td>
+    </tr>
     {% endfor %}
-    </table>
+</table>
 
 
 {% else %}
@@ -146,31 +146,31 @@
 </div>
 <br/>
 <center>
-<h1> Events At This Venue </h1>
+    <h1> Events At This Venue </h1>
     You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
-    </center>
+</center>
 <br>
 
 <table class="table table-bordered table-striped table-hover">
-        <thead>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Manager</th>
-            <th scope="col">Days Till event</th>
-            <th scope="col">Date</th>
+    <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Manager</th>
+        <th scope="col">Days Till event</th>
+        <th scope="col">Date</th>
 
-        </tr>
-        </thead>
-        {% for event in event_list %}
-        <tbody>
-        <tr>
-            <th scope="row"><a href="{% url 'show-event' event.id %}">{{ event }}</a></th>
-            <td>{{ event.manager }}</td>
-            <td>{{ event.event_data }}</td>
-            <td>{{ event.days_till_event }}</td>
-        </tr>
+    </tr>
+    </thead>
+    {% for event in event_list %}
+    <tbody>
+    <tr>
+        <th scope="row"><a href="{% url 'show-event' event.id %}">{{ event }}</a></th>
+        <td>{{ event.manager }}</td>
+        <td>{{ event.event_data }}</td>
+        <td>{{ event.days_till_event }}</td>
+    </tr>
     {% endfor %}
-    </table>
+</table>
 {% endif %}
 
 

@@ -30,13 +30,83 @@
 
         <form class="d-flex" role="search" method="POST" action="{% url 'home' %}">
             {% csrf_token %}
-            <input class="form-control me-2" type="search" placeholder="Search Month" aria-label="Search"
+            <input class="form-control me-2" type="search" placeholder="Under Construction.." aria-label="Search"
                    name="searched" id="search-input">
         </form>
 
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="nav nav-underline mx-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false" style="font-size: 20px; font-weight: bold;">
+                        Calendar
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'home' 'January' %}" style="font-size: 18px">
+                                January
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'home' 'February' %}" style="font-size: 18px">
+                                February
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'home' 'March' %}" style="font-size: 18px">
+                                March
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'home' 'April' %}" style="font-size: 18px">
+                                April
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'home' 'May' %}" style="font-size: 18px">
+                                May
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'home' 'June' %}" style="font-size: 18px">
+                                June
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'home' 'July' %}" style="font-size: 18px">
+                                July
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'home' 'August' %}" style="font-size: 18px">
+                                August
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'home' 'September' %}" style="font-size: 18px">
+                                September
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'home' 'October' %}" style="font-size: 18px">
+                                October
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'home' 'November' %}" style="font-size: 18px">
+                                November
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'home' 'December' %}" style="font-size: 18px">
+                                December
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </li>
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"

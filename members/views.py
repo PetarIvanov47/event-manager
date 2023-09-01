@@ -6,6 +6,7 @@ from .forms import RegisterUserForm
 
 
 def login_user(request):
+
     if request.method == 'POST':
         username = request.POST["username"]
         password = request.POST["password"]
@@ -15,6 +16,7 @@ def login_user(request):
             login(request, user)
             messages.success(request, f'Welcome back {request.user}!')
             return redirect('home')
+
         else:
             messages.success(request, 'There Was An Error Logging In, Try Again...')
             return redirect('login')
@@ -30,8 +32,10 @@ def logout_user(request):
 
 
 def register_user(request):
+
     if request.method == 'POST':
         form = RegisterUserForm(request.POST)
+
         if form.is_valid():
             form.save()
             username = form.cleaned_data['username']

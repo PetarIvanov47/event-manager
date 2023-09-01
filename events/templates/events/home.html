@@ -3,11 +3,18 @@
 {% block content %}
 <center>
 
-    <h4>{{ cal|safe }}</h4>
+    <h4 style=>{{ cal|safe }}</h4>
+
     <br/><br/>
 
     {% if event_list %}
-    <h3>Events for {{ month }}:</h3><br/>
+
+    <h3>Events for {{ month }}:</h3>
+    You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
+    <br/>
+    <br/>
+
+
     <table class="table table-bordered table-striped table-hover">
         <thead>
         <tr>
@@ -28,14 +35,14 @@
 
             <td><a href="{% url 'show-venue' event.venue.id %}">{{ event.venue }}</a></td>
         </tr>
-{% endfor %}
+        {% endfor %}
     </table>
 
 
-
     {% else %}
-    <h3>No Events This Month</h3>
+    <h3>No Events For {{ month }}</h3>
     You Can Add New Event Here -> <a href="{% url 'add-event' %}">Add Event</a>
+    <br/>
     {% endif %}
 </center>
 

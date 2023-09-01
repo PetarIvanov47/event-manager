@@ -31,12 +31,16 @@ def admin_panel(request):
         if request.method == "POST":
             if "approve_events" in request.POST:
                 id_list = request.POST.getlist('boxes')
+
+                # On submit With Approve_Events Button Set All Selected Events Approved To True
                 [Event.objects.filter(pk=int(x)).update(approved=True) for x in id_list]
 
                 messages.success(request, "Events Approved!")
                 return redirect('home')
 
             elif "clear_events" in request.POST:
+
+                # On Submit With Clear Events Button Delete All Event That Are Expired
                 past_events.delete()
                 messages.success(request, "Successfully Deleted Past Events!")
                 return redirect('home')
@@ -48,8 +52,7 @@ def admin_panel(request):
                                                                         'event_count': event_count,
                                                                         'venue_count': venue_count,
                                                                         'user_count': user_count
-                                                                        }
-                          )
+                                                                        })
     # If Someone Who Is Not SuperUser Trying To View The Page
     else:
         messages.success(request, "You aren't authorized to view this page!")
@@ -60,11 +63,14 @@ def admin_panel(request):
 def leave_event(request, event_id):
     if request.user.is_authenticated:
         event = Event.objects.get(pk=event_id)
+
+        # User Leave The Event If He Is In The Attendees List
         if request.user in event.attendees.all():
             event.attendees.remove(request.user)
             messages.success(request, f"{request.user} Successfully Leave The Event - {event}")
             return redirect(request.META['HTTP_REFERER'])
 
+        # If User Is Not In Attendees List
         else:
             messages.success(request, f"{request.user} Is Not Registered For - {event}!")
             return redirect(request.META['HTTP_REFERER'])
@@ -77,12 +83,16 @@ def leave_event(request, event_id):
 def join_event(request, event_id):
     if request.user.is_authenticated:
         event = Event.objects.get(pk=event_id)
+
+        # If User Already Participate In The Event He Get Massage
         if request.user in event.attendees.all():
             messages.success(request, f"{request.user} Is Register For This Event!")
             return redirect(request.META['HTTP_REFERER'])
 
+        # Join Event If User Not Participate In It
         event.attendees.add(request.user)
         messages.success(request, f"{request.user} Successfully Join Event - {event}!")
+
         return redirect(request.META['HTTP_REFERER'])
 
     else:
@@ -96,10 +106,18 @@ def set_paginator(request, obj, pages: int):
     return p.get_page(page)
 
 
+# User's Events That He Participate
 def my_events(request):
     if request.user.is_authenticated:
         me = request.user.id
-        list_events = Event.objects.filter(attendees=me, approved=True).order_by('event_data', 'name')
+
+        # Filter Events Objects
+        list_events = Event.objects.filter(attendees=me,
+                                           approved=True
+                                           ).order_by('event_data',
+                                                      'name')
+
+        # Set Paginator With The Events
         events = set_paginator(request, list_events, 5)
 
         return render(request, 'events/my_events.html', {'events': events})
@@ -109,6 +127,7 @@ def my_events(request):
         return redirect('home')
 
 
+# Create Delete Venue View
 def delete_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
 
@@ -120,6 +139,7 @@ def delete_venue(request, venue_id):
     return render(request, 'events/delete_venue.html', {'venue': venue})
 
 
+# Create Delete Event View
 def delete_event(request, event_id):
     event = Event.objects.get(pk=event_id)
 
@@ -131,33 +151,45 @@ def delete_event(request, event_id):
     return render(request, 'events/delete_event.html', {'event': event})
 
 
+# Create Update Event View
 def update_event(request, event_id):
     event = Event.objects.get(pk=event_id)
+
+    # Show AdminForm If User Is SuperUser
     if request.user.is_superuser:
         form = EventFormAdmin(request.POST or None, instance=event)
+
+    # Show Normal Form If User Is Normal
     else:
         form = EventForm(request.POST or None, instance=event)
 
     if form.is_valid():
         form.save()
         messages.success(request, f'You Successfully Update Event - "{event.name}"')
+
         return redirect('list-events')
 
-    return render(request, 'events/update_event.html', {'event': event, 'form': form})
+    return render(request, 'events/update_event.html', {'event': event,
+                                                        'form': form
+                                                        })
 
 
+# Create New Event View
 def add_event(request):
     submitted = False
 
     if request.method == "POST":
+
         if request.user.is_superuser:
             form = EventFormAdmin(request.POST)
+
             if form.is_valid():
                 form.save()
                 return HttpResponseRedirect('/add_event?submitted=True')
 
         else:
             form = EventForm(request.POST)
+
             if form.is_valid():
                 event = form.save(commit=False)
                 event.manager = request.user
@@ -179,9 +211,14 @@ def add_event(request):
     return render(request, 'events/add_event.html', {'form': form, 'submitted': submitted})
 
 
+# Create Update Venue View
 def update_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
-    form = VenueForm(request.POST or None, request.FILES or None, instance=venue)
+    form = VenueForm(request.POST or None,
+                     request.FILES or None,
+                     instance=venue,
+                     )
+
     if form.is_valid():
         form.save()
         messages.success(request, f'You Successfully Updated Venue - "{venue.name}"')
@@ -191,6 +228,7 @@ def update_venue(request, venue_id):
     return render(request, 'events/update_venue.html', {'venue': venue, 'form': form})
 
 
+# Create Venue Info View
 def show_venue(request, venue_id):
     # Get Venue Object
     venue = Venue.objects.get(pk=venue_id)
@@ -203,9 +241,11 @@ def show_venue(request, venue_id):
 
     return render(request, 'events/show_venue.html', {'venue': venue,
                                                       'venue_owner': venue_owner,
-                                                      'event_list': event_list}
-                  )
+                                                      'event_list': event_list
+                                                      })
 
+
+# Create All Venues View
 def list_venues(request):
     if request.method == "POST":
         searched = request.POST.get('searched', '')
@@ -220,6 +260,7 @@ def list_venues(request):
         return render(request, 'events/venue.html', {'all_venues': all_venues})
 
 
+# Create New Venue View
 def add_venue(request):
     submitted = False
 
@@ -230,7 +271,6 @@ def add_venue(request):
             venue = form.save(commit=False)
             venue.owner = request.user.id
             venue.save()
-            # form.save()
             return HttpResponseRedirect('/add_venue?submitted=True')
 
     else:
@@ -241,6 +281,7 @@ def add_venue(request):
     return render(request, 'events/add_venue.html', {'form': form, 'submitted': submitted})
 
 
+# Create All Event View
 def all_events(request):
     if request.method == "POST":
         searched = request.POST.get('searched', '')
@@ -248,17 +289,16 @@ def all_events(request):
             Q(name__icontains=searched) |
             Q(manager__username__icontains=searched) |
             Q(venue__name__icontains=searched),
-            approved=True
-        ).order_by('event_data',
-                   'name')
+            approved=True).order_by('event_data',
+                                    'name')
 
         event_list = set_paginator(request, events, 5)
 
         return render(request,
                       'events/event_list.html',
                       {'event_list': event_list,
-                       'searched': searched}
-                      )
+                       'searched': searched
+                       })
 
     else:
         events = Event.objects.filter(approved=True).order_by('event_data', 'name')
@@ -266,17 +306,14 @@ def all_events(request):
         return render(request, 'events/event_list.html', {'event_list': event_list})
 
 
+# Create Event Info View
 def show_event(request, event_id):
     event = Event.objects.get(pk=event_id)
     return render(request, 'events/show_event.html', {'event': event})
 
 
-def search_month_events(request):
-    pass
-
-
-def home(request, year=datetime.now().year, month=datetime.now().strftime('%B')):
-
+# Home View
+def home(request, month=datetime.now().strftime('%B'), year=datetime.now().year):
     if request.user.is_authenticated:
         month = month.title()
         month_number = list(calendar.month_name).index(month)
@@ -304,5 +341,6 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime('%B'))
                        'time': time,
                        'event_list': event_list,
                        })
+
     else:
         return redirect('login')
