@@ -1,0 +1,16 @@
+annotated-types==0.5.0
+APScheduler==3.10.4
+asgiref==3.7.2
+Django==4.2.4
+django-bootstrap-datepicker-plus==5.0.4
+Pillow==10.0.0
+pydantic==2.2.0
+pydantic_core==2.6.0
+pytz==2023.3
+reportlab==4.0.4
+schedule==1.2.0
+six==1.16.0
+sqlparse==0.4.4
+typing_extensions==4.7.1
+tzdata==2023.3
+tzlocal==5.0.1
