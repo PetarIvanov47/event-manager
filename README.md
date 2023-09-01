@@ -25,7 +25,8 @@ Image Handling: I've learned how to import and display images in my Django proje
 
 File Handling: I've implemented features to download PDF, CSV, and text files from the database, offering data export functionality.
 
-Getting Started
+GETTING STARTED:
+
 To run this project on your local machine, follow these steps in the terminal:
 
 Clone the repository:
@@ -34,35 +35,37 @@ git clone https://github.com/PeturIvanov/event-manager
 
 Navigate to the project directory:
 
-cd 'where you save the project'
+-- cd 'where you save the project' --
 
 Create a virtual environment (optional but recommended):
 
-python -m venv venv
+-- python -m venv venv -- 
 
 Activate the virtual environment (Windows):
 
-venv\Scripts\activate
+-- venv\Scripts\activate -- 
 
-In Git Bash i use 'source venv/Scripts/activate'
+In Git Bash I use:
+
+-- 'source venv/Scripts/activate' --
 
 Activate the virtual environment (Linux/macOS):
 
-source venv/bin/activate
+-- source venv/bin/activate --
 
 Install project dependencies:
 
-pip install -r requirements.txt
+-- pip install -r requirements.txt -- 
 
 Run database migrations:
 
-python manage.py makemigrations
+-- python manage.py makemigrations -- 
 
-python manage.py migrate
+-- python manage.py migrate -- 
 
 Start the development server:
 
-python manage.py runserver
+-- python manage.py runserver --
 
 Access the project in your web browser at http://localhost:8000/.
 
